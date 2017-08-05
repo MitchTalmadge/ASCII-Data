@@ -4,17 +4,40 @@ import com.mitchtalmadge.asciigraph.util.SeriesUtils;
 
 import java.text.DecimalFormat;
 
-public class ASCIIGraph {
+class ASCIIGraph {
 
-    private final double[] series;
+    private double[] series;
+    private double min;
+    private double max;
 
-    private int height = 0;
+    private int height;
+    private int numRows;
+    private int numCols;
 
     private int tickWidth = 7;
-    DecimalFormat tickFormat = new DecimalFormat("#0.00");
+    private DecimalFormat tickFormat = new DecimalFormat("###0.00");
+
+    private int axisIndex = tickWidth + 2;
+    private int lineIndex = axisIndex + 1;
 
     private ASCIIGraph(double[] series) {
         this.series = series;
+    }
+
+    /**
+     * Calculates the instance fields used for plotting.
+     */
+    private void calculateFields() {
+        // Get minimum and maximum from series.
+        double[] minMax = SeriesUtils.getMinAndMaxValues(this.series);
+        this.min = minMax[0];
+        this.max = minMax[1];
+
+        // Since the graph is made of ASCII characters, it needs whole-number counts of rows and columns.
+        this.numRows = height == 0 ? (int) Math.round(max - min) + 1 : height;
+
+        // For columns, add the width of the tick marks, 2 spaces for the axis, and the length of the series.
+        this.numCols = tickWidth + 2 + series.length;
     }
 
     public static ASCIIGraph fromSeries(double[] series) {
@@ -36,50 +59,46 @@ public class ASCIIGraph {
         return this;
     }
 
+    /**
+     * Plots the graph and returns it as a String.
+     *
+     * @return The string representation of the graph, using new lines.
+     */
     public String plot() {
-
-        // ---- SETUP ---- //
-
-        // Get minimum and maximum from series.
-        double[] minMax = SeriesUtils.getMinAndMaxValues(this.series);
-
-        // Compute the range of the series.
-        double range = Math.abs(minMax[0] - minMax[1]);
-
-        // Decide the height of the graph. If 0, use the range.
-        double height = this.height == 0 ? range : this.height;
-
-        // The scale of the range of the graph is determined by the ratio between the range and the desired height.
-        double rangeScale = height / range;
-
-        // Since the graph is made of ASCII characters, it needs whole-number counts of rows and columns.
-        int numRows = (int) Math.abs(Math.round(minMax[1] * rangeScale) - Math.round(minMax[0] * rangeScale));
-        // For columns, add the width of the tick marks, 2 spaces for the axis, and the length of the series.
-        int numCols = tickWidth + 2 + series.length;
-
+        calculateFields();
 
         // ---- PLOTTING ---- //
 
         // The graph is initially stored in a 2D array, later turned into Strings.
         char[][] graph = new char[numRows][numCols];
 
-        drawTicksAndAxis(graph, minMax);
-        drawLine(graph, minMax, rangeScale);
+        // Fill the graph with space characters.
+        for (int row = 0; row < numRows; row++) {
+            for (int col = 0; col < graph[row].length; col++) {
+                graph[row][col] = ' ';
+            }
+        }
 
+        // Draw the ticks and graph.
+        drawTicksAndAxis(graph);
+
+        // Draw the line.
+        drawLine(graph);
+
+        // Convert the 2D char array graph to a String using newlines.
         return convertGraphToString(graph);
     }
 
     /**
-     * Adds the Tick Marks and Axis to the Graph on the left hand side.
+     * Adds the tick marks and axis to the graph.
      *
-     * @param graph  The 2D char array representation of the graph.
-     * @param minMax The minimum and maximum values of the y-axis in a length 2 array.
+     * @param graph The graph.
      */
-    private void drawTicksAndAxis(char[][] graph, double[] minMax) {
+    private void drawTicksAndAxis(char[][] graph) {
         // Add the labels and the axis.
         for (int row = 0; row < graph.length; row++) {
 
-            double y = determineYValueAtRow(row, graph.length, minMax);
+            double y = determineYValueAtRow(row);
 
             // Compute and Format Tick
             char[] tick = formatTick(y).toCharArray();
@@ -87,54 +106,68 @@ public class ASCIIGraph {
             // Insert Tick
             System.arraycopy(tick, 0, graph[row], 0, tick.length);
 
-            // Insert Axis line, with a space between the tick and axis. '┼' is used at the origin.
-            graph[row][tickWidth + 1] = ' ';
-            graph[row][tickWidth + 2] = (y == 0) ? '┼' : '┤';
+            // Insert Axis line. '┼' is used at the origin.
+            graph[row][axisIndex] = (y == 0) ? '┼' : '┤';
         }
     }
 
-    private void drawLine(char[][] graph, double[] minMax, double rangeScale) {
+    /**
+     * Adds the line to the graph.
+     *
+     * @param graph The graph.
+     */
+    private void drawLine(char[][] graph) {
         // The row closest to y when x = 0.
-        int initialRow = (graph.length - 1) - (int) Math.round((series[0] - minMax[0]) * rangeScale);
+        int initialRow = determineRowAtYValue(series[0]);
         // Modify the axis to show the start.
-        graph[initialRow][tickWidth + 2] = '┼';
+        graph[initialRow][axisIndex] = '┼';
 
-        for (int x = 0; x < series.length; x++) {
+        for (int x = 0; x < series.length - 1; x++) {
             // The start and end locations of the line.
-            int startRow = graph.length - 1 - (int) Math.round((series[x] - minMax[0]) * rangeScale);
-            int endRow = graph.length - 1 - (int) Math.round((series[x + 1] - minMax[0]) * rangeScale);
+            int startRow = determineRowAtYValue(series[x]);
+            int endRow = determineRowAtYValue(series[x + 1]);
 
             if (startRow == endRow) { // The line is horizontal.
-                graph[startRow][tickWidth + 2 + x] = '─';
+                graph[startRow][lineIndex + x] = '─';
             } else { // The line has slope.
                 // Draw the curved lines.
-                graph[startRow][tickWidth + 2 + x] = (startRow > endRow) ? '╮' : '╯';
-                graph[endRow][tickWidth + 2 + x] = (startRow > endRow) ? '╰' : '╭';
+                graph[startRow][lineIndex + x] = (startRow < endRow) ? '╮' : '╯';
+                graph[endRow][lineIndex + x] = (startRow < endRow) ? '╰' : '╭';
 
                 int fromRow = Math.min(startRow, endRow);
                 int toRow = Math.max(startRow, endRow);
-                for (int row = fromRow + 1; fromRow < toRow; fromRow++) {
-                    graph[row][tickWidth + 2 + x] = '│';
+                for (int row = fromRow + 1; row < toRow; row++) {
+                    graph[row][lineIndex + x] = '│';
                 }
             }
         }
     }
 
     /**
+     * Determines the row closest to the given y-axis value.
+     *
+     * @param yValue The value of y.
+     * @return The closest row to the given y-axis value.
+     */
+    private int determineRowAtYValue(double yValue) {
+        double range = max - min;
+
+        return (numRows - 1) - (int) Math.round(((yValue - min) / range) * (numRows - 1));
+    }
+
+    /**
      * Determines the y-axis value corresponding to the given row.
      *
-     * @param row     The row.
-     * @param numRows The total number of rows.
-     * @param minMax  The minimum and maximum values of the y-axis in a length 2 array.
+     * @param row The row.
      * @return The y-axis value at the given row.
      */
-    private double determineYValueAtRow(int row, int numRows, double[] minMax) {
-        double range = Math.abs(minMax[1] - minMax[0]);
+    private double determineYValueAtRow(int row) {
+        double range = max - min;
 
         // Compute the current y value by starting with the maximum and subtracting how far down we are in rows.
         // Splitting the range into chunks based on the number of rows gives us how much to subtract per row.
         // (-1 from the number of rows because it is a length, and the last row index is actually numRows - 1).
-        return minMax[1] - (row * (range / (numRows - 1)));
+        return max - (row * (range / (numRows - 1)));
     }
 
     /**

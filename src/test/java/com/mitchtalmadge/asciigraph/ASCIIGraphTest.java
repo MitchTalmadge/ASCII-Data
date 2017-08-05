@@ -4,7 +4,7 @@ import org.junit.Test;
 
 public class ASCIIGraphTest {
 
-    private static final double[] sinWaveSeries = new double[120];
+    private static final double[] sinWaveSeries = new double[90];
 
     static {
         // Compute Sin Wave Series
