@@ -9,7 +9,6 @@ public class ASCIIGraph {
     private final double[] series;
 
     private int height = 0;
-    private int offset = 3;
 
     private int tickWidth = 7;
     DecimalFormat tickFormat = new DecimalFormat("#0.00");
@@ -24,11 +23,6 @@ public class ASCIIGraph {
 
     public ASCIIGraph withHeight(int height) {
         this.height = height;
-        return this;
-    }
-
-    public ASCIIGraph withOffset(int offset) {
-        this.offset = offset;
         return this;
     }
 
@@ -58,34 +52,65 @@ public class ASCIIGraph {
         // The scale of the range of the graph is determined by the ratio between the range and the desired height.
         double rangeScale = height / range;
 
-        // Determine the scaled min and max based on the range scale.
-        minMax[0] = minMax[0] * rangeScale;
-        minMax[1] = minMax[1] * rangeScale;
-
         // Since the graph is made of ASCII characters, it needs whole-number counts of rows and columns.
-        int numRows = (int) Math.round(Math.abs(scaledMinMax[0] - scaledMinMax[1]));
-        int numCols = series.length + offset;
+        int numRows = (int) Math.abs(Math.round(minMax[1] * rangeScale) - Math.round(minMax[0] * rangeScale));
+        // For columns, add the width of the tick marks, 2 spaces for the axis, the offset, and the length of the series.
+        int numCols = tickWidth + 2 + series.length;
+
 
         // ---- PLOTTING ---- //
 
         // The graph is initially stored in a 2D array, later turned into Strings.
-        // The columns include the width of the tick, 2 spaces for an axis, and the number of columns for the lines.
-        char[][] graph = new char[numRows][tickWidth + 2 + numCols];
+        char[][] graph = new char[numRows][numCols];
 
-        // Add the labels and the axis.
-        for (int y = 0; y < numRows; y++) {
-            // Compute and Format Tick
-            char[] tick = formatTick(minMax[1] - y * range / numRows).toCharArray();
+        // Ticks and Axis
+        drawTicksAndAxis(graph, minMax);
 
-            // Insert Tick
-            System.arraycopy(tick, 0, graph[y], 0, tick.length);
-
-            // Insert Axis line, with a space between the tick and axis. '┼' is used at the origin.
-            graph[y][tick.length + 1] = ' ';
-            graph[y][tick.length + 2] = (y == 0) ? '┼' : '┤';
-        }
 
         return convertGraphToString(graph);
+    }
+
+    /**
+     * Adds the Tick Marks and Axis to the Graph on the left hand side.
+     *
+     * @param graph  The 2D char array representation of the graph.
+     * @param minMax The minimum and maximum values of the y-axis in a length 2 array.
+     */
+    private void drawTicksAndAxis(char[][] graph, double[] minMax) {
+        double range = Math.abs(minMax[0] - minMax[1]);
+
+        // Add the labels and the axis.
+        for (int row = 0; row < graph.length; row++) {
+
+            double y = determineYValueAtRow(row, graph.length, minMax);
+
+            // Compute and Format Tick
+            char[] tick = formatTick(y).toCharArray();
+
+            // Insert Tick
+            System.arraycopy(tick, 0, graph[row], 0, tick.length);
+
+            // Insert Axis line, with a space between the tick and axis. '┼' is used at the origin.
+            graph[row][tick.length + 1] = ' ';
+            graph[row][tick.length + 2] = (y == 0) ? '┼' : '┤';
+        }
+    }
+
+    /**
+     * Determines the y-axis value corresponding to the given row.
+     *
+     * @param row     The row.
+     * @param numRows The total number of rows.
+     * @param minMax  The minimum and maximum values of the y-axis in a length 2 array.
+     * @return The y-axis value at the given row.
+     */
+    private double determineYValueAtRow(int row, int numRows, double[] minMax) {
+        double range = Math.abs(minMax[1] - minMax[0]);
+
+        // Compute the current y value by starting with the maximum and subtracting how far down we are in rows.
+        // Splitting the range into chunks based on the number of rows gives us how much to subtract per row.
+        // (-1 from the number of rows because it is a length, and the last row index is actually numRows - 1).
+        return minMax[1] - (row * (range / (numRows - 1)));
     }
 
     /**

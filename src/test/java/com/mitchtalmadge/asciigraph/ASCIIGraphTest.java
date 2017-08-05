@@ -14,7 +14,7 @@ public class ASCIIGraphTest {
 
     @Test
     public void testBasicGraph() {
-        System.out.println(ASCIIGraph.fromSeries(sinWaveSeries).plot());
+        System.out.println(ASCIIGraph.fromSeries(sinWaveSeries).withHeight(11).plot());
     }
 
 }
