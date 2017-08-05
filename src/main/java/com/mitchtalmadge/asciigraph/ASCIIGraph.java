@@ -54,7 +54,7 @@ public class ASCIIGraph {
 
         // Since the graph is made of ASCII characters, it needs whole-number counts of rows and columns.
         int numRows = (int) Math.abs(Math.round(minMax[1] * rangeScale) - Math.round(minMax[0] * rangeScale));
-        // For columns, add the width of the tick marks, 2 spaces for the axis, the offset, and the length of the series.
+        // For columns, add the width of the tick marks, 2 spaces for the axis, and the length of the series.
         int numCols = tickWidth + 2 + series.length;
 
 
@@ -63,9 +63,8 @@ public class ASCIIGraph {
         // The graph is initially stored in a 2D array, later turned into Strings.
         char[][] graph = new char[numRows][numCols];
 
-        // Ticks and Axis
         drawTicksAndAxis(graph, minMax);
-
+        drawLine(graph, minMax, rangeScale);
 
         return convertGraphToString(graph);
     }
@@ -77,8 +76,6 @@ public class ASCIIGraph {
      * @param minMax The minimum and maximum values of the y-axis in a length 2 array.
      */
     private void drawTicksAndAxis(char[][] graph, double[] minMax) {
-        double range = Math.abs(minMax[0] - minMax[1]);
-
         // Add the labels and the axis.
         for (int row = 0; row < graph.length; row++) {
 
@@ -91,8 +88,35 @@ public class ASCIIGraph {
             System.arraycopy(tick, 0, graph[row], 0, tick.length);
 
             // Insert Axis line, with a space between the tick and axis. '┼' is used at the origin.
-            graph[row][tick.length + 1] = ' ';
-            graph[row][tick.length + 2] = (y == 0) ? '┼' : '┤';
+            graph[row][tickWidth + 1] = ' ';
+            graph[row][tickWidth + 2] = (y == 0) ? '┼' : '┤';
+        }
+    }
+
+    private void drawLine(char[][] graph, double[] minMax, double rangeScale) {
+        // The row closest to y when x = 0.
+        int initialRow = (graph.length - 1) - (int) Math.round((series[0] - minMax[0]) * rangeScale);
+        // Modify the axis to show the start.
+        graph[initialRow][tickWidth + 2] = '┼';
+
+        for (int x = 0; x < series.length; x++) {
+            // The start and end locations of the line.
+            int startRow = graph.length - 1 - (int) Math.round((series[x] - minMax[0]) * rangeScale);
+            int endRow = graph.length - 1 - (int) Math.round((series[x + 1] - minMax[0]) * rangeScale);
+
+            if (startRow == endRow) { // The line is horizontal.
+                graph[startRow][tickWidth + 2 + x] = '─';
+            } else { // The line has slope.
+                // Draw the curved lines.
+                graph[startRow][tickWidth + 2 + x] = (startRow > endRow) ? '╮' : '╯';
+                graph[endRow][tickWidth + 2 + x] = (startRow > endRow) ? '╰' : '╭';
+
+                int fromRow = Math.min(startRow, endRow);
+                int toRow = Math.max(startRow, endRow);
+                for (int row = fromRow + 1; fromRow < toRow; fromRow++) {
+                    graph[row][tickWidth + 2 + x] = '│';
+                }
+            }
         }
     }
 
