@@ -14,10 +14,10 @@ class ASCIIGraph {
     private int numRows;
     private int numCols;
 
-    private int tickWidth = 7;
+    private int tickWidth = 8;
     private DecimalFormat tickFormat = new DecimalFormat("###0.00");
 
-    private int axisIndex = tickWidth + 2;
+    private int axisIndex = tickWidth + 1;
     private int lineIndex = axisIndex + 1;
 
     private ASCIIGraph(double[] series) {
@@ -36,8 +36,8 @@ class ASCIIGraph {
         // Since the graph is made of ASCII characters, it needs whole-number counts of rows and columns.
         this.numRows = height == 0 ? (int) Math.round(max - min) + 1 : height;
 
-        // For columns, add the width of the tick marks, 2 spaces for the axis, and the length of the series.
-        this.numCols = tickWidth + 2 + series.length;
+        // For columns, add the width of the tick marks, the width of the axis, and the length of the series.
+        this.numCols = tickWidth + (axisIndex - tickWidth) + series.length;
     }
 
     public static ASCIIGraph fromSeries(double[] series) {
@@ -134,9 +134,10 @@ class ASCIIGraph {
                 graph[startRow][lineIndex + x] = (startRow < endRow) ? '╮' : '╯';
                 graph[endRow][lineIndex + x] = (startRow < endRow) ? '╰' : '╭';
 
-                int fromRow = Math.min(startRow, endRow);
-                int toRow = Math.max(startRow, endRow);
-                for (int row = fromRow + 1; row < toRow; row++) {
+                // If the rows are more than 1 row apart, we need to fill in the gap with vertical lines.
+                int lowerRow = Math.min(startRow, endRow);
+                int upperRow = Math.max(startRow, endRow);
+                for (int row = lowerRow + 1; row < upperRow; row++) {
                     graph[row][lineIndex + x] = '│';
                 }
             }
