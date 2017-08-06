@@ -68,15 +68,15 @@ class ASCIIGraph {
         double[] minMax = SeriesUtils.getMinAndMaxValues(this.series);
         this.min = minMax[0];
         this.max = minMax[1];
-        this.range = min - max;
+        this.range = max - min;
+
+        axisIndex = tickWidth + 1;
+        lineIndex = axisIndex + 1;
 
         // Since the graph is made of ASCII characters, it needs whole-number counts of rows and columns.
         this.numRows = numRows == 0 ? (int) Math.round(max - min) + 1 : numRows;
         // For columns, add the width of the tick marks, the width of the axis, and the length of the series.
         this.numCols = tickWidth + (axisIndex - tickWidth) + series.length;
-
-        axisIndex = tickWidth + 1;
-        lineIndex = axisIndex + 1;
     }
 
     /**
