@@ -10,14 +10,14 @@ cache:
   - "$HOME/.cache"
 before_install:
 - openssl aes-256-cbc -K $encrypted_64e6c1cf7105_key -iv $encrypted_64e6c1cf7105_iv
-  -in .\\deploy\\pubring.gpg.enc -out .\\deploy\\pubring.gpg -d
+  -in $TRAVIS_BUILD_DIR/deploy/pubring.gpg.enc -out $TRAVIS_BUILD_DIR/deploy/pubring.gpg -d
 - openssl aes-256-cbc -K $encrypted_64e6c1cf7105_key -iv $encrypted_64e6c1cf7105_iv
-  -in .\\deploy\\secring.gpg.enc -out .\\deploy\\secring.gpg -d
+  -in $TRAVIS_BUILD_DIR/deploy/secring.gpg.enc -out $TRAVIS_BUILD_DIR/deploy/secring.gpg -d
 script:
 - mvn install -B -V -P deploy
 deploy:
   provider: script
-  script: cp .\\deploy\\travis.settings.xml $HOME/.m2/settings.xml && mvn deploy
+  script: cp $TRAVIS_BUILD_DIR/deploy/travis.settings.xml $HOME/.m2/settings.xml && mvn deploy
   skip_cleanup: true
   on:
     tags: true
