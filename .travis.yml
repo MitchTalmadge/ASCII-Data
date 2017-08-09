@@ -26,6 +26,6 @@ script:
     mvn deploy -B -V -P deployment;
   elif [ "$TRAVIS_BRANCH" == "develop" ]; then
     mvn deploy -B -V -P deployment;
-  elif [ "$TRAVIS_BRANCH" == release/* ]; then
+  elif [ "$TRAVIS_BRANCH" == release* ]; then
       mvn deploy -B -V -P deployment;
   fi
