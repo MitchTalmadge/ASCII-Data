@@ -71,8 +71,8 @@
                                     <keyname>${env.GPG_KEYNAME}</keyname>
                                     <passphrase>${env.GPG_PASSPHRASE}</passphrase>
                                     <defaultKeyring>false</defaultKeyring>
-                                    <publicKeyring>deploy/pubring.gpg</publicKeyring>
-                                    <secretKeyring>deploy/secring.gpg</secretKeyring>
+                                    <publicKeyring>${project.basedir}/deploy/pubring.gpg</publicKeyring>
+                                    <secretKeyring>${project.basedir}/deploy/secring.gpg</secretKeyring>
                                 </configuration>
                                 <goals>
                                     <goal>sign</goal>
