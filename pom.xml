@@ -6,7 +6,7 @@
 
     <groupId>com.mitchtalmadge</groupId>
     <artifactId>asciigraph</artifactId>
-    <version>develop-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>ASCIIGraph</name>
     <description>A small Java library for producing nice looking ASCII line ╭┈╯ graphs.</description>
