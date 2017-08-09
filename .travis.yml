@@ -13,17 +13,20 @@ cache:
   directories:
     - "$HOME/.m2"
 before_install:
+# Decrypt GPG Keys
 - openssl aes-256-cbc -K $encrypted_8c393341f536_key -iv $encrypted_8c393341f536_iv
   -in $TRAVIS_BUILD_DIR/deploy/gpg.tar.gz.enc -out $TRAVIS_BUILD_DIR/deploy/gpg.tar.gz -d
+# Decompress GPG Keys
 - tar xzvf $TRAVIS_BUILD_DIR/deploy/gpg.tar.gz -C $TRAVIS_BUILD_DIR/deploy
+# Copy Maven Settings to proper directory.
 - cp $TRAVIS_BUILD_DIR/deploy/.travis.settings.xml $HOME/.m2/settings.xml
-install: mvn dependency:resolve
+install: mvn install -B -V
 script:
-- mvn install deploy -B -V -P deployment
-deploy:
-  provider: script
-  script:
-  - mvn deploy -P deployment
-  skip_cleanup: true
-  on:
-    tags: true
+
+- if [ "$TRAVIS_BRANCH" == "master" ]; then
+    # Master Branch Specific
+    mvn deploy -B -V -P deployment
+  elif [ "$TRAVIS_BRANCH" == "develop" ]; then
+    # Develop Branch Specific
+    mvn deploy -B -V -P deployment
+  fi
