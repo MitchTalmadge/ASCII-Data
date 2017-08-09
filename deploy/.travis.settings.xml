@@ -5,7 +5,7 @@
 
     <servers>
         <server>
-            <id>nexus</id>
+            <id>ossrh</id>
             <username>${SONATYPE_USERNAME}</username>
             <password>${SONATYPE_PASSWORD}</password>
         </server>

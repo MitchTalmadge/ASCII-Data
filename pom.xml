@@ -68,7 +68,9 @@
                                 <phase>verify</phase>
                                 <configuration>
                                     <executable>gpg</executable>
+                                    <!--suppress MavenModelInspection -->
                                     <keyname>${env.GPG_KEYNAME}</keyname>
+                                    <!--suppress MavenModelInspection -->
                                     <passphrase>${env.GPG_PASSPHRASE}</passphrase>
                                     <defaultKeyring>false</defaultKeyring>
                                     <publicKeyring>${project.basedir}/deploy/pubring.gpg</publicKeyring>
