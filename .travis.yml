@@ -13,7 +13,7 @@ before_install:
   -in $TRAVIS_BUILD_DIR/deploy/gpg.tar.gz.enc -out $TRAVIS_BUILD_DIR/deploy/gpg.tar.gz -d
 - tar xzvf $TRAVIS_BUILD_DIR/deploy/gpg.tar.gz
 script:
-- mvn install -B -V -P deploy
+- mvn install -B -V -P deployment
 deploy:
   provider: script
   script: cp $TRAVIS_BUILD_DIR/deploy/travis.settings.xml $HOME/.m2/settings.xml &&
