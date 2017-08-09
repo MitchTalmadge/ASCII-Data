@@ -22,10 +22,10 @@ before_install:
 - cp $TRAVIS_BUILD_DIR/deploy/.travis.settings.xml $HOME/.m2/settings.xml
 install: mvn install -B -V
 script:
-- if [ "$TRAVIS_BRANCH" == "master" ]; then
+- if [[ "$TRAVIS_BRANCH" == "master" ]]; then
     mvn deploy -B -V -P deployment;
-  elif [ "$TRAVIS_BRANCH" == "develop" ]; then
+  elif [[ "$TRAVIS_BRANCH" == "develop" ]]; then
     mvn deploy -B -V -P deployment;
-  elif [ "$TRAVIS_BRANCH" == release* ]; then
-      mvn deploy -B -V -P deployment;
+  elif [[ "$TRAVIS_BRANCH" == release* ]]; then
+    mvn deploy -B -V -P deployment;
   fi
