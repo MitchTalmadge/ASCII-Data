@@ -11,7 +11,7 @@ env:
   - secure: "zEPaJeR61/pq2wqsaIUvmDXJLcE6mFo3sS0f98CHcsrzqAwcorwGzauozSY0Dhz/Ac3mTpgsrKadtQ6Gi8jJMZdB2VDfoAE3j0Sd92SxXY7XEaQvnLuPN7uEjCKQg16woAwMnaYfIhoZUZy3vVrk9IXxWuXqPFbpX1/L4yr3BhIdP/5yydbCt+NSsXZ//tHS7Th2kDcb8rQWfrY172E7JHkfPudieABLeJS6gJkgtt1SwIxfx8nLw45DP3d1t/hxnj6hiDC8SXjvkpJ7aV5Sg9zaxTRabBu8m1bb/zOu9IdMUlKzSSu0Ji1OUunYodat0yy2lXU/JQc7oK5vzwrJL6aL9XMNfU53fV1i/S13otiP3o3qZYpM/ilkgcVdpZ7xpLaN4LvXiOxK9jWu+xeH9a0hDuZykwIxzsfV/ooccWBVQuWzscmGQQuCfIwX8v0zbk4wLvBIxDz4gSfQCN9Vi1+cfeNbXTFwhS6zdLweJBW45DC2vKi/LypnQYwjog//sHvNmHZzDluZeSYbN6S/fTpphmUXpk4GqWcby4hValkCiBpt6G2ZoxbXIojMKW6q0igaQMuwGChGwZJsSZyfXUmcSOwuwLRHPahtTwu6nEPFYUgBlaHd49CrcW09CBPHfJWkkM3athXdmXKgsl207UiEfWCt8sirJgx5G1ySsqY="
 cache:
   directories:
-  - "$HOME/.cache"
+    - "$HOME/.m2"
 before_install:
 - openssl aes-256-cbc -K $encrypted_8c393341f536_key -iv $encrypted_8c393341f536_iv
   -in $TRAVIS_BUILD_DIR/deploy/gpg.tar.gz.enc -out $TRAVIS_BUILD_DIR/deploy/gpg.tar.gz -d
