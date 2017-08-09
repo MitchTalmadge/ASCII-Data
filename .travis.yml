@@ -23,7 +23,7 @@ before_install:
 install: mvn install -B -V
 script:
 - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    mvn deploy -B -V -P deployment
+    mvn deploy -B -V -P deployment;
   elif [ "$TRAVIS_BRANCH" == "develop" ]; then
-    mvn deploy -B -V -P deployment
+    mvn deploy -B -V -P deployment;
   fi
