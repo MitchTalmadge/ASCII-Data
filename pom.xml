@@ -6,7 +6,7 @@
 
     <groupId>com.mitchtalmadge</groupId>
     <artifactId>asciigraph</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <name>ASCIIGraph</name>
     <description>A small Java library for producing nice looking ASCII line ╭┈╯ graphs.</description>
@@ -21,13 +21,17 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/MitchTalmadge/ASCIIGraph</url>
+        <url>https://github.com/MitchTalmadge/ASCIIGraph/tree/master</url>
     </scm>
 
-    <organization>
-        <name>Mitch Talmadge</name>
-        <url>https://MitchTalmadge.com</url>
-    </organization>
+    <developers>
+        <developer>
+            <name>Mitch Talmadge</name>
+            <email>mitch@mitchtalmadge.com</email>
+            <organization>Mitch Talmadge</organization>
+            <organizationUrl>https://MitchTalmadge.com</organizationUrl>
+        </developer>
+    </developers>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
