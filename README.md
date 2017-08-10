@@ -32,6 +32,11 @@ This library originated as a port of the JavaScript library [kroitor/asciichart]
 </dependency>
 ```
 
+**Gradle:**
+```
+compile 'com.mitchtalmadge:asciigraph:1.0.1'
+```
+
 ## Usage
 
 Graphs are simply large Strings. Use the `ASCIIGraph` class to configure the graph, 
