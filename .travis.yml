@@ -20,23 +20,22 @@ before_install:
 - tar xzvf $TRAVIS_BUILD_DIR/deploy/gpg.tar.gz -C $TRAVIS_BUILD_DIR/deploy
 # Copy Maven Settings to proper directory.
 - cp $TRAVIS_BUILD_DIR/deploy/.travis.settings.xml $HOME/.m2/settings.xml
-install: mvn install -B -V
 deploy:
   # Deploy Tags (Releases)
   - provider: script
-    script: mvn deploy -B -V -P deployment
+    script: mvn deploy -B -V -DskipTests=true -P deployment
     skip_cleanup: true
     on:
       tags: true
   # Deploy Develop Snapshots
   - provider: script
-    script: mvn deploy -B -V -P deployment
+    script: mvn deploy -B -V -DskipTests=true -P deployment
     skip_cleanup: true
     on:
       branch: develop
   # Deploy Release Snapshots
   - provider: script
-    script: mvn deploy -B -V -P deployment
+    script: mvn deploy -B -V -DskipTests=true -P deployment
     skip_cleanup: true
     on:
       branch: release*
