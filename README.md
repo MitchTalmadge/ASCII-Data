@@ -70,12 +70,15 @@ You can modify certain properties of the graph to change its appearance.
 Use the method `ASCIIGraph#withNumRows(int)` to change the number of rows on the graph.
 
 `ASCIIGraph.fromSeries(data).plot()`
+
 ![Default Rows](http://i.imgur.com/DXiUYWR.png?1)                                    
 
 `ASCIIGraph.fromSeries(data).withNumRows(8).plot()`
+
 ![8 Rows](http://i.imgur.com/JyO2ONo.png?1) 
 
 `ASCIIGraph.fromSeries(data).withNumRows(3).plot()`
+
 ![3 Rows](http://i.imgur.com/eLIAkuv.png?1) 
 
 #### Tick Formatting
