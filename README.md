@@ -60,23 +60,7 @@ public class Example {
 }
 ```
 **Output:**
-```
-   15.00 ┤           ╭──────╮                                                    ╭──────╮                                        
-   12.86 ┤        ╭──╯      ╰──╮                                              ╭──╯      ╰──╮                                     
-   10.71 ┤      ╭─╯            ╰─╮                                          ╭─╯            ╰─╮                                   
-    8.57 ┤    ╭─╯                ╰─╮                                       ╭╯                ╰─╮                                 
-    6.43 ┤   ╭╯                    ╰╮                                    ╭─╯                   ╰╮                                
-    4.29 ┤  ╭╯                      ╰╮                                  ╭╯                      ╰╮                               
-    2.14 ┤╭─╯                        ╰─╮                              ╭─╯                        ╰─╮                             
-    0.00 ┼╯                            ╰╮                            ╭╯                            ╰╮                            
-   -2.14 ┤                              ╰─╮                        ╭─╯                              ╰─╮                        ╭─
-   -4.29 ┤                                ╰╮                      ╭╯                                  ╰╮                      ╭╯ 
-   -6.43 ┤                                 ╰─╮                   ╭╯                                    ╰─╮                   ╭╯  
-   -8.57 ┤                                   ╰╮                ╭─╯                                       ╰╮                ╭─╯   
-  -10.71 ┤                                    ╰─╮            ╭─╯                                          ╰─╮            ╭─╯     
-  -12.86 ┤                                      ╰──╮      ╭──╯                                              ╰──╮      ╭──╯       
-  -15.00 ┤                                         ╰──────╯                                                    ╰──────╯          
-```
+![Basic Example Graph](http://i.imgur.com/uiyYMfP.png) 
 
 ### Options
 
@@ -86,46 +70,13 @@ You can modify certain properties of the graph to change its appearance.
 Use the method `ASCIIGraph#withNumRows(int)` to change the number of rows on the graph.
 
 `ASCIIGraph.fromSeries(data).plot()`
-```
-   19.34 ┤                          ╭╮                 ╭
-   18.32 ┤                         ╭╯│                ╭╯
-   17.30 ┤                         │ │               ╭╯ 
-   16.29 ┤                        ╭╯ │              ╭╯  
-   15.27 ┤                        │  ╰╮  ╭╮       ╭╮│   
-   14.25 ┤                    ╭╮ ╭╯   │ ╭╯│ ╭╮    │╰╯   
-   13.23 ┤                   ╭╯│ │    │ │ ╰─╯│   ╭╯     
-   12.21 ┤                 ╭╮│ ╰╮│    │ │    ╰╮  │      
-   11.19 ┤                ╭╯││  ╰╯    │╭╯     ╰╮╭╯      
-   10.17 ┤               ╭╯ ╰╯        ││       ╰╯       
-    9.15 ┤            ╭╮ │            ││                
-    8.13 ┤           ╭╯│ │            ╰╯                
-    7.11 ┤          ╭╯ ╰─╯                              
-    6.10 ┤       ╭─╮│                                   
-    5.08 ┤       │ ││                                   
-    4.06 ┤     ╭─╯ ╰╯                                   
-    3.04 ┤    ╭╯                                        
-    2.02 ┤  ╭─╯                                         
-    1.00 ┼──╯    
-```                                       
+![Default Rows](http://i.imgur.com/DXiUYWR.png?1)                                    
 
 `ASCIIGraph.fromSeries(data).withNumRows(8).plot()`
-```
-   19.34 ┤                         ╭─╮                 ╭
-   16.72 ┤                        ╭╯ │              ╭──╯
-   14.10 ┤                   ╭─╮ ╭╯  ╰╮ ╭────╮   ╭──╯   
-   11.48 ┤                ╭─╮│ ╰─╯    │╭╯    ╰───╯      
-    8.86 ┤           ╭─╮ ╭╯ ╰╯        ╰╯                
-    6.24 ┤       ╭─╮╭╯ ╰─╯                              
-    3.62 ┤    ╭──╯ ╰╯                                   
-    1.00 ┼────╯  
-```                                       
+![8 Rows](http://i.imgur.com/JyO2ONo.png?1) 
 
 `ASCIIGraph.fromSeries(data).withNumRows(3).plot()`
-```
-   19.34 ┤                        ╭───╮  ╭╮       ╭╮╭───
-   10.17 ┤       ╭─╮╭─────────────╯   ╰──╯╰───────╯╰╯   
-    1.00 ┼───────╯ ╰╯                                   
-```
+![3 Rows](http://i.imgur.com/eLIAkuv.png?1) 
 
 #### Tick Formatting
 
@@ -138,17 +89,7 @@ the number `10.00` with 3 spaces, since it only takes up 5 characters.
 ```
 ASCIIGraph.fromSeries(data).withTickFormat(new DecimalFormat("##0.000000")).withTickWidth(12).plot()
 ```
-
-```
-   19.342350 ┤                         ╭─╮                 ╭
-   16.722014 ┤                        ╭╯ │              ╭──╯
-   14.101679 ┤                   ╭─╮ ╭╯  ╰╮ ╭────╮   ╭──╯   
-   11.481343 ┤                ╭─╮│ ╰─╯    │╭╯    ╰───╯      
-    8.861007 ┤           ╭─╮ ╭╯ ╰╯        ╰╯                
-    6.240671 ┤       ╭─╮╭╯ ╰─╯                              
-    3.620336 ┤    ╭──╯ ╰╯                                   
-    1.000000 ┼────╯                                         
-```
+![Tick Formatted Graph](http://i.imgur.com/Ii081SS.png) 
 
 ## Getting Help
 
