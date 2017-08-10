@@ -68,6 +68,7 @@ You can modify certain properties of the graph to change its appearance.
 
 #### Number of Rows
 Use the method `ASCIIGraph#withNumRows(int)` to change the number of rows on the graph.
+By default, the library will choose the number of rows by incrementing between the minimum and maximum values in steps of 1.
 
 `ASCIIGraph.fromSeries(data).plot()`
 
@@ -83,9 +84,9 @@ Use the method `ASCIIGraph#withNumRows(int)` to change the number of rows on the
 
 #### Tick Formatting
 
-You can format the tick marks (the numbers on the side of the axis) in two ways.
+You can adjust the appearance of the tick marks (the numbers on the side of the axis) in two ways.
 
-- You can how they are formatted, using a custom `DecimalFormat`.
+- You can change how they are formatted, using a custom `DecimalFormat`.
 - You can change their padding width. For example, a padding width of 8 will left-pad
 the number `10.00` with 3 spaces, since it only takes up 5 characters.
 
