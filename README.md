@@ -28,13 +28,13 @@ This library originated as a port of the JavaScript library [kroitor/asciichart]
 <dependency>
     <groupId>com.mitchtalmadge</groupId>
     <artifactId>asciigraph</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 
 **Gradle:**
 ```
-compile 'com.mitchtalmadge:asciigraph:1.0.1'
+compile 'com.mitchtalmadge:asciigraph:1.0.2'
 ```
 
 ## Usage
