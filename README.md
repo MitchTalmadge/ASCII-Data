@@ -10,6 +10,17 @@ This library originated as a port of the JavaScript library [kroitor/asciichart]
 
 ![Example Graph](http://i.imgur.com/uiyYMfP.png) 
 
+# Table of Contents
+
+* [Installation](#installation)
+* [Usage](#usage)
+    * [Basic Example](#basic-example-sin-wave)
+    * [Options](#options)
+        * [Number of Rows](#number-of-rows)
+        * [Tick Formatting](#tick-formatting)
+* [Getting Help](#getting-help)
+* [Contributing](#contributing)
+
 ## Installation
 
 **Maven:**
