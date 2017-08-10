@@ -2,7 +2,6 @@
 
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/mitchtalmadge/asciigraph/master/LICENSE)
 [![Build Status](https://travis-ci.org/MitchTalmadge/ASCIIGraph.svg?branch=master)](https://travis-ci.org/MitchTalmadge/ASCIIGraph)
-[![codecov](https://codecov.io/gh/MitchTalmadge/ASCIIGraph/branch/master/graph/badge.svg)](https://codecov.io/gh/MitchTalmadge/ASCIIGraph)
 [![GitHub issues](https://img.shields.io/github/issues/mitchtalmadge/asciigraph.svg)](https://github.com/mitchtalmadge/asciigraph/issues)
 
 A small Java library for producing nice looking ASCII line ╭┈╯ graphs.
@@ -40,9 +39,27 @@ public class Example {
             sinWaveSeries[i] = 15 * Math.sin(i * ((Math.PI * 4) / sinWaveSeries.length));
         
         // Plot and output the graph.
-        System.out.println(ASCIIGraph.fromSeries(sinWaveSeries).plot());
+        System.out.println(ASCIIGraph.fromSeries(sinWaveSeries).withNumRows(15).plot());
     }
 }
+```
+**Output:**
+```
+   15.00 ┤           ╭──────╮                                                    ╭──────╮                                        
+   12.86 ┤        ╭──╯      ╰──╮                                              ╭──╯      ╰──╮                                     
+   10.71 ┤      ╭─╯            ╰─╮                                          ╭─╯            ╰─╮                                   
+    8.57 ┤    ╭─╯                ╰─╮                                       ╭╯                ╰─╮                                 
+    6.43 ┤   ╭╯                    ╰╮                                    ╭─╯                   ╰╮                                
+    4.29 ┤  ╭╯                      ╰╮                                  ╭╯                      ╰╮                               
+    2.14 ┤╭─╯                        ╰─╮                              ╭─╯                        ╰─╮                             
+    0.00 ┼╯                            ╰╮                            ╭╯                            ╰╮                            
+   -2.14 ┤                              ╰─╮                        ╭─╯                              ╰─╮                        ╭─
+   -4.29 ┤                                ╰╮                      ╭╯                                  ╰╮                      ╭╯ 
+   -6.43 ┤                                 ╰─╮                   ╭╯                                    ╰─╮                   ╭╯  
+   -8.57 ┤                                   ╰╮                ╭─╯                                       ╰╮                ╭─╯   
+  -10.71 ┤                                    ╰─╮            ╭─╯                                          ╰─╮            ╭─╯     
+  -12.86 ┤                                      ╰──╮      ╭──╯                                              ╰──╮      ╭──╯       
+  -15.00 ┤                                         ╰──────╯                                                    ╰──────╯          
 ```
 
 ### Options
