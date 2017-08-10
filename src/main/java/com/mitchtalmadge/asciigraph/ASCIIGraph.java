@@ -4,7 +4,7 @@ import com.mitchtalmadge.asciigraph.util.SeriesUtils;
 
 import java.text.DecimalFormat;
 
-class ASCIIGraph {
+public class ASCIIGraph {
 
     /**
      * The data series, with index being the x-axis and value being the y-axis.
