@@ -1,6 +1,6 @@
-package com.mitchtalmadge.asciigraph;
+package com.mitchtalmadge.asciidata.graph;
 
-import com.mitchtalmadge.asciigraph.util.SeriesUtils;
+import com.mitchtalmadge.asciidata.graph.util.SeriesUtils;
 
 import java.text.DecimalFormat;
 

@@ -1,5 +1,6 @@
-package com.mitchtalmadge.asciigraph;
+package com.mitchtalmadge.asciidata.graph;
 
+import com.mitchtalmadge.asciidata.TestUtils;
 import org.junit.Test;
 
 import java.io.IOException;
