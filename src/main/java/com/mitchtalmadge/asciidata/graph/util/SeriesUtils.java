@@ -1,4 +1,4 @@
-package com.mitchtalmadge.asciigraph.util;
+package com.mitchtalmadge.asciidata.graph.util;
 
 import java.util.Arrays;
 

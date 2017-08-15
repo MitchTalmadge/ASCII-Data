@@ -1,9 +1,16 @@
-package com.mitchtalmadge.asciigraph;
+package com.mitchtalmadge.asciidata.graph;
 
-import com.mitchtalmadge.asciigraph.util.SeriesUtils;
+import com.mitchtalmadge.asciidata.graph.util.SeriesUtils;
 
 import java.text.DecimalFormat;
 
+/**
+ * A two-axis graph created entirely from ASCII characters.
+ * Printable to a console, chat server, or anywhere else where text-style graphs are convenient.
+ *
+ * @author MitchTalmadge
+ * @author kroitor
+ */
 public class ASCIIGraph {
 
     /**
