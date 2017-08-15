@@ -57,12 +57,13 @@ public class ASCIITable {
             // The first row is for the headers.
             String[] rowData = row == 0 ? headers : data[row - 1];
 
-            // Make sure we don't have too many columns.
-            if (rowData.length > columnsCount)
-                throw new IllegalArgumentException("There are too many columns at row: " + (row - 1));
+            // Make sure we have enough columns.
+            if (rowData.length != columnsCount)
+                throw new IllegalArgumentException("The number of columns in row " + (row - 1) + " (" + rowData.length + ") " +
+                        "do not match the number of headers (" + columnsCount + ")");
 
             // Iterate over each column in the row to get its width, and compare it to the maximum.
-            for (int column = 0; column < rowData.length; column++) {
+            for (int column = 0; column < columnsCount; column++) {
                 // Check the length of each line in the cell.
                 for (String rowDataLine : rowData[column].split("\\n"))
                     // Compare to the current max width.
