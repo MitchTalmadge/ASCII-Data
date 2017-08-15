@@ -4,11 +4,12 @@
 [![Build Status](https://travis-ci.org/MitchTalmadge/ASCII-Data.svg?branch=master)](https://travis-ci.org/MitchTalmadge/ASCII-Data)
 [![GitHub issues](https://img.shields.io/github/issues/mitchtalmadge/asciigraph.svg)](https://github.com/mitchtalmadge/asciigraph/issues)
 
-A small Java library for producing nice looking ASCII line ╭┈╯ graphs.
+A small Java library for producing nice looking ASCII line-graphs and tables.
 
 This library includes a port of the JavaScript library [kroitor/asciichart](https://github.com/kroitor/asciichart).
 
-![Example Graph](http://i.imgur.com/uiyYMfP.png) 
+<img src="http://i.imgur.com/eCtF9yr.png" height="187px" align="left"/>
+<img src="http://i.imgur.com/nGK9MRD.png" height="187px"/>
 
 ## Installation, Usage, Help, and more!
 
