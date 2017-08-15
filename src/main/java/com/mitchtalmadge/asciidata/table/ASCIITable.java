@@ -11,9 +11,10 @@ public class ASCIITable {
 
     private final String[] headers;
     private final String[][] data;
-    private final int columns;
+    private final int columnsCount;
     private final int[] columnWidths;
     private final int emptyWidth;
+    private final String emptyMessage = "(empty)";
 
     /**
      * Creates a new table using the given headers and data.
@@ -23,39 +24,66 @@ public class ASCIITable {
      * @return A new ASCIITable instance that can be printed using the {@link ASCIITable#toString()}.
      */
     public static ASCIITable fromData(String[] headers, String[][] data) {
-        if (headers == null) throw new NullPointerException("headers == null");
-        if (headers.length == 0) throw new IllegalArgumentException("Headers must not be empty.");
-        if (data == null) throw new NullPointerException("data == null");
+        // Ensure we have headers.
+        if (headers == null)
+            throw new IllegalArgumentException("The table headers array is null.");
+        if (headers.length == 0)
+            throw new IllegalArgumentException("No headers were supplied.");
+
+        // Set the data to empty if it is null.
+        if (data == null)
+            data = new String[0][0];
+
+        // Create an ASCIITable instance.
         return new ASCIITable(headers, data);
     }
 
+    /**
+     * Constructs a new ASCIITable from the given headers and data.
+     *
+     * @param headers The headers of the table.
+     * @param data    The data of the table.
+     */
     private ASCIITable(String[] headers, String[][] data) {
         this.headers = headers;
         this.data = data;
 
-        columns = headers.length;
-        columnWidths = new int[columns];
-        for (int row = -1; row < data.length; row++) {
-            String[] rowData = (row == -1) ? headers : data[row]; // Hack to parse headers too.
-            if (rowData.length != columns) {
-                throw new IllegalArgumentException(
-                        String.format("Row %s's %s columns != %s columns", row + 1, rowData.length, columns));
-            }
-            for (int column = 0; column < columns; column++) {
-                for (String rowDataLine : rowData[column].split("\\n")) {
+        // The number of columns in the table is equivalent to the number of headers.
+        columnsCount = headers.length;
+
+        // Calculate the max width of each column in the table.
+        columnWidths = new int[columnsCount];
+        for (int row = 0; row < data.length + 1; row++) {
+            // The first row is for the headers.
+            String[] rowData = row == 0 ? headers : data[row - 1];
+
+            // Make sure we don't have too many columns.
+            if (rowData.length > columnsCount)
+                throw new IllegalArgumentException("There are too many columns at row: " + (row - 1));
+
+            // Iterate over each column in the row to get its width, and compare it to the maximum.
+            for (int column = 0; column < rowData.length; column++) {
+                // Check the length of each line in the cell.
+                for (String rowDataLine : rowData[column].split("\\n"))
+                    // Compare to the current max width.
                     columnWidths[column] = Math.max(columnWidths[column], rowDataLine.length());
-                }
             }
         }
 
-        int emptyWidth = 3 * (columns - 1); // Account for column dividers and their spacing.
+        // Determine the width of everything including borders.
+        // This is to be used in case there is no data and we must write the empty message to the table.
+
+        // Account for borders
+        int emptyWidth = 3 * (columnsCount - 1);
+        // Add the width of each column.
         for (int columnWidth : columnWidths) {
             emptyWidth += columnWidth;
         }
         this.emptyWidth = emptyWidth;
 
-        if (emptyWidth < EMPTY.length()) { // Make sure we're wide enough for the empty text.
-            columnWidths[columns - 1] += EMPTY.length() - emptyWidth;
+        // Make sure we have enough space for the empty message.
+        if (emptyWidth < emptyMessage.length()) {
+            columnWidths[columnsCount - 1] += emptyMessage.length() - emptyWidth;
         }
     }
 
@@ -69,12 +97,12 @@ public class ASCIITable {
         // Append the headers of the table.
         appendRow(output, headers);
 
-        // Check if the data is empty, in which case, we will only write "(empty)" into the table contents.
+        // Check if the data is empty, in which case, we will only write the empty message into the table contents.
         if (data.length == 0) {
             // Horizontal divider below the headers
             appendHorizontalDivider(output, '╠', '═', '╧', '╣');
-            // "(empty)" row
-            output.append('║').append(pad(emptyWidth, "(empty)")).append("║\n");
+            // Empty message row
+            output.append('║').append(pad(emptyWidth, emptyMessage)).append("║\n");
             // Horizontal divider at the bottom of the table.
             appendHorizontalDivider(output, '╚', '═', '═', '╝');
             return output.toString();
@@ -107,7 +135,7 @@ public class ASCIITable {
     private void appendRow(StringBuilder output, String[] data) {
         // Step 1: Determine the row height from the maximum number of lines out of each cell.
         int rowHeight = 0;
-        for (int column = 0; column < columns; column++) {
+        for (int column = 0; column < columnsCount; column++) {
             // The height of this cell.
             int cellHeight = data[column].split("\\n").length;
             // Choose the greatest.
@@ -119,7 +147,7 @@ public class ASCIITable {
         for (int line = 0; line < rowHeight; line++) {
 
             // For each column...
-            for (int column = 0; column < columns; column++) {
+            for (int column = 0; column < columnsCount; column++) {
 
                 // Either add the left or the middle borders, depending on the location of the column.
                 output.append(column == 0 ? '║' : '│');
@@ -155,7 +183,7 @@ public class ASCIITable {
     private void appendHorizontalDivider(StringBuilder output, char left, char fill, char middle, char right) {
 
         // For each column...
-        for (int column = 0; column < columns; column++) {
+        for (int column = 0; column < columnsCount; column++) {
             // Either add the left or the middle borders, depending on the location of the column.
             output.append(column == 0 ? left : middle);
 
