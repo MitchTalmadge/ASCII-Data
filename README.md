@@ -6,8 +6,6 @@
 
 A small Java library for producing nice looking ASCII line-graphs and tables.
 
-This library includes a port of the JavaScript library [kroitor/asciichart](https://github.com/kroitor/asciichart).
-
 <img src="http://i.imgur.com/eCtF9yr.png" height="187px" align="left"/>
 <img src="http://i.imgur.com/nGK9MRD.png" height="187px"/>
 
