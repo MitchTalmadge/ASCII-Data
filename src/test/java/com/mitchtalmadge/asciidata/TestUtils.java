@@ -1,4 +1,4 @@
-package com.mitchtalmadge.asciigraph;
+package com.mitchtalmadge.asciidata;
 
 import java.io.File;
 import java.io.IOException;

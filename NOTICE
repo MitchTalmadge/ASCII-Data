@@ -1,3 +1,4 @@
-ASCIIGraph originated as a port, from JavaScript to Java, of asciichart by kroitor (https://github.com/kroitor/asciichart).
-
-kroitor/asciichart is licensed under the MIT License (https://github.com/kroitor/asciichart/blob/master/LICENSE.txt).
+1. ASCII-Data includes a port, from JavaScript to Java, of asciichart by kroitor (https://github.com/kroitor/asciichart).
+    kroitor/asciichart is licensed under the MIT License (https://github.com/kroitor/asciichart/blob/master/LICENSE.txt).
+2. ASCII-Data includes a merge of "Flip Tables" by JakeWharton (https://github.com/JakeWharton/flip-tables/).
+    JakeWharton/flip-tables is licensed under the Apache 2 License (https://github.com/JakeWharton/flip-tables/blob/master/LICENSE.txt).
