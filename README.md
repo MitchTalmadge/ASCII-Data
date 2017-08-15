@@ -6,7 +6,7 @@
 
 A small Java library for producing nice looking ASCII line-graphs and tables.
 
-<img src="http://i.imgur.com/nGK9MRD.png" height="187px"/>
+<img src="http://i.imgur.com/nGK9MRD.png" height="187px" align="left"/>
 <img src="http://i.imgur.com/eCtF9yr.png" height="187px"/>
 
 ## Installation, Usage, Help, and more!
