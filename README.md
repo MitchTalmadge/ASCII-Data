@@ -1,6 +1,6 @@
 # ASCII-Data
 
-[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/mitchtalmadge/asciigraph/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/mitchtalmadge/ascii-data/master/LICENSE)
 [![Build Status](https://travis-ci.org/MitchTalmadge/ASCII-Data.svg?branch=master)](https://travis-ci.org/MitchTalmadge/ASCII-Data)
 [![GitHub issues](https://img.shields.io/github/issues/mitchtalmadge/ascii-data.svg)](https://github.com/mitchtalmadge/ascii-data/issues)
 
