@@ -6,7 +6,7 @@
 
     <groupId>com.mitchtalmadge</groupId>
     <artifactId>ascii-data</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.2.0</version>
 
     <name>ASCII-Data</name>
     <description>A small Java library for producing nice looking ASCII line-graphs and tables.</description>
