@@ -1,84 +1,71 @@
 package com.mitchtalmadge.asciidata.table.formats;
 
 /**
- * The default, UTF-8 based table format for {@link com.mitchtalmadge.asciidata.table.ASCIITable}.
- * Uses double pipes in most cases.
+ * An ASCIITable Format using only ASCII characters.
  *
- * @author JakeWharton
+ * @author bitsofinfo
  * @author MitchTalmadge
  */
-public class UTF8TableFormat extends TableFormatAbstract {
+public class ASCIITableFormat extends TableFormatAbstract {
 
     @Override
     public char getTopLeftCorner() {
-        return '╔';
+        return '+';
     }
 
     @Override
     public char getTopRightCorner() {
-        return '╗';
+        return '+';
     }
 
     @Override
     public char getBottomLeftCorner() {
-        return '╚';
+        return '+';
     }
 
     @Override
     public char getBottomRightCorner() {
-        return '╝';
+        return '+';
     }
 
     @Override
     public char getTopEdgeBorderDivider() {
-        return '╤';
+        return '+';
     }
 
     @Override
     public char getBottomEdgeBorderDivider() {
-        return '╧';
+        return '+';
     }
 
     @Override
     public char getLeftEdgeBorderDivider(boolean underHeaders) {
-        if (underHeaders)
-            return '╠';
-        else
-            return '╟';
+        return '|';
     }
 
     @Override
     public char getRightEdgeBorderDivider(boolean underHeaders) {
-        if (underHeaders)
-            return '╣';
-        else
-            return '╢';
+        return '|';
     }
 
     @Override
     public char getHorizontalBorderFill(boolean edge, boolean underHeaders) {
         if (edge || underHeaders)
-            return '═';
+            return '=';
         else
-            return '─';
+            return '-';
     }
 
     @Override
     public char getVerticalBorderFill(boolean edge) {
-        if (edge)
-            return '║';
-        else
-            return '│';
+        return '|';
     }
 
     @Override
     public char getCross(boolean underHeaders, boolean emptyData) {
-        if (underHeaders) {
-            if (emptyData)
-                return '╧';
-            else
-                return '╪';
-        } else
-            return '┼';
+        if (emptyData)
+            return '=';
+        else
+            return '|';
     }
 }

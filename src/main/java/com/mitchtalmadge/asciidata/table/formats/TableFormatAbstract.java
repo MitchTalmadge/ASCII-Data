@@ -1,5 +1,10 @@
 package com.mitchtalmadge.asciidata.table.formats;
 
+/**
+ * Determines the characters that make up an ASCIITable.
+ * Default is {@link UTF8TableFormat}.
+ * @author MitchTalmadge
+ */
 public abstract class TableFormatAbstract {
 
     // ============ Corners
