@@ -1,6 +1,7 @@
 package com.mitchtalmadge.asciidata.table;
 
 import com.mitchtalmadge.asciidata.TestUtils;
+import com.mitchtalmadge.asciidata.table.formats.ASCIITableFormat;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -24,8 +25,13 @@ public class ASCIITableTest {
         };
 
         assertEquals(
-                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/simpleTable.txt")),
+                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/utf8/simpleTable.txt")),
                 TestUtils.commonizeLineEndings(ASCIITable.fromData(headers, data).toString())
+        );
+        // ASCII Table Format
+        assertEquals(
+                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/ascii/simpleTable.txt")),
+                TestUtils.commonizeLineEndings(ASCIITable.fromData(headers, data).withTableFormat(new ASCIITableFormat()).toString())
         );
 
     }
@@ -41,14 +47,24 @@ public class ASCIITableTest {
 
         // Not null data, but empty
         assertEquals(
-                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/emptyTable.txt")),
+                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/utf8/emptyTable.txt")),
                 TestUtils.commonizeLineEndings(ASCIITable.fromData(headers, emptyData).toString())
+        );
+        // ASCII Table Format
+        assertEquals(
+                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/ascii/emptyTable.txt")),
+                TestUtils.commonizeLineEndings(ASCIITable.fromData(headers, emptyData).withTableFormat(new ASCIITableFormat()).toString())
         );
 
         // Null data
         assertEquals(
-                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/emptyTable.txt")),
+                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/utf8/emptyTable.txt")),
                 TestUtils.commonizeLineEndings(ASCIITable.fromData(headers, null).toString())
+        );
+        // ASCII Table Format
+        assertEquals(
+                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/ascii/emptyTable.txt")),
+                TestUtils.commonizeLineEndings(ASCIITable.fromData(headers, null).withTableFormat(new ASCIITableFormat()).toString())
         );
     }
 
@@ -84,10 +100,14 @@ public class ASCIITableTest {
         };
 
         assertEquals(
-                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/multiLineTable.txt")),
+                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/utf8/multiLineTable.txt")),
                 TestUtils.commonizeLineEndings(ASCIITable.fromData(headers, data).toString())
         );
-
+        // ASCII Table Format
+        assertEquals(
+                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/ascii/multiLineTable.txt")),
+                TestUtils.commonizeLineEndings(ASCIITable.fromData(headers, data).withTableFormat(new ASCIITableFormat()).toString())
+        );
     }
 
     /**
@@ -100,8 +120,10 @@ public class ASCIITableTest {
         String[] nestedHeaders = new String[]{"First", "Last"};
         String[] names = new String[]{"Alfred Alan", "Alison Smart", "Ben Bessel", "John Roberts"};
         ASCIITable[] nestedTables = new ASCIITable[4];
+        ASCIITable[] nestedTablesASCIIFormat = new ASCIITable[4];
         for (int i = 0; i < names.length; i++) {
             nestedTables[i] = ASCIITable.fromData(nestedHeaders, new String[][]{names[i].split(" ")});
+            nestedTablesASCIIFormat[i] = ASCIITable.fromData(nestedHeaders, new String[][]{names[i].split(" ")}).withTableFormat(new ASCIITableFormat());
         }
 
         // Insertion
@@ -112,11 +134,22 @@ public class ASCIITableTest {
                 {"256", nestedTables[2].toString(), "benb@outlook.com"},
                 {"374", nestedTables[3].toString(), "johnrob@company.com"},
         };
+        String[][] dataASCIIFormat = new String[][]{
+                {"123", nestedTablesASCIIFormat[0].toString(), "aalan@gmail.com"},
+                {"223", nestedTablesASCIIFormat[1].toString(), "asmart@gmail.com"},
+                {"256", nestedTablesASCIIFormat[2].toString(), "benb@outlook.com"},
+                {"374", nestedTablesASCIIFormat[3].toString(), "johnrob@company.com"},
+        };
 
         // Testing
         assertEquals(
-                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/nestedTable.txt")),
+                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/utf8/nestedTable.txt")),
                 TestUtils.commonizeLineEndings(ASCIITable.fromData(headers, data).toString())
+        );
+        // ASCII Table Format
+        assertEquals(
+                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/ascii/nestedTable.txt")),
+                TestUtils.commonizeLineEndings(ASCIITable.fromData(headers, dataASCIIFormat).withTableFormat(new ASCIITableFormat()).toString())
         );
 
     }

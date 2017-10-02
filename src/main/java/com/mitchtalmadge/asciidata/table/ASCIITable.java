@@ -1,11 +1,15 @@
 package com.mitchtalmadge.asciidata.table;
 
+import com.mitchtalmadge.asciidata.table.formats.TableFormatAbstract;
+import com.mitchtalmadge.asciidata.table.formats.UTF8TableFormat;
+
 /**
  * A table created entirely from ASCII characters, such as pipes.
  * Printable to a console, chat server, or anywhere else where text-style tables are convenient.
  *
  * @author MitchTalmadge
  * @author JakeWharton
+ * @author bitsofinfo
  */
 public class ASCIITable {
 
@@ -17,12 +21,19 @@ public class ASCIITable {
     private final String emptyMessage = "(empty)";
 
     /**
+     * How the table will be displayed. Defines which characters to be used.
+     * Defaults to {@link UTF8TableFormat}.
+     */
+    private TableFormatAbstract tableFormat = new UTF8TableFormat();
+
+    /**
      * Creates a new table using the given headers and data.
      *
      * @param headers The headers of the table. Each index is a new column, in order from left to right.
      * @param data    The data of the table, in the format String[row][column]. Newlines are allowed.
      * @return A new ASCIITable instance that can be printed using the {@link ASCIITable#toString()}.
      */
+    @SuppressWarnings("WeakerAccess")
     public static ASCIITable fromData(String[] headers, String[][] data) {
         // Ensure we have headers.
         if (headers == null)
@@ -88,12 +99,27 @@ public class ASCIITable {
         }
     }
 
+    /**
+     * Changes the format of the table (how it will be displayed; which characters to use) to the provided format.
+     *
+     * @param tableFormat The format to use. By default, the table will already use {@link UTF8TableFormat}.
+     * @return This ASCIITable instance.
+     */
+    public ASCIITable withTableFormat(TableFormatAbstract tableFormat) {
+        this.tableFormat = tableFormat;
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
 
         // Append the table's top horizontal divider.
-        appendHorizontalDivider(output, '╔', '═', '╤', '╗');
+        appendHorizontalDivider(output,
+                tableFormat.getTopLeftCorner(),
+                tableFormat.getHorizontalBorderFill(true, false),
+                tableFormat.getTopEdgeBorderDivider(),
+                tableFormat.getTopRightCorner());
 
         // Append the headers of the table.
         appendRow(output, headers);
@@ -101,11 +127,24 @@ public class ASCIITable {
         // Check if the data is empty, in which case, we will only write the empty message into the table contents.
         if (data.length == 0) {
             // Horizontal divider below the headers
-            appendHorizontalDivider(output, '╠', '═', '╧', '╣');
+            appendHorizontalDivider(output, tableFormat.getLeftEdgeBorderDivider(true),
+                    tableFormat.getHorizontalBorderFill(false, true),
+                    tableFormat.getCross(true, true),
+                    tableFormat.getRightEdgeBorderDivider(true));
+
             // Empty message row
-            output.append('║').append(pad(emptyWidth, emptyMessage)).append("║\n");
+            output.append(tableFormat.getVerticalBorderFill(true))
+                    .append(pad(emptyWidth, emptyMessage))
+                    .append(tableFormat.getVerticalBorderFill(true))
+                    .append('\n');
+
             // Horizontal divider at the bottom of the table.
-            appendHorizontalDivider(output, '╚', '═', '═', '╝');
+            appendHorizontalDivider(output,
+                    tableFormat.getBottomLeftCorner(),
+                    tableFormat.getHorizontalBorderFill(true, false),
+                    tableFormat.getHorizontalBorderFill(true, false),
+                    tableFormat.getBottomRightCorner());
+
             return output.toString();
         }
 
@@ -114,16 +153,29 @@ public class ASCIITable {
 
             // The first row has a different style of border than the others.
             if (row == 0)
-                appendHorizontalDivider(output, '╠', '═', '╪', '╣');
+                appendHorizontalDivider(output,
+                        tableFormat.getLeftEdgeBorderDivider(true),
+                        tableFormat.getHorizontalBorderFill(false, true),
+                        tableFormat.getCross(true, false),
+                        tableFormat.getRightEdgeBorderDivider(true));
             else
-                appendHorizontalDivider(output, '╟', '─', '┼', '╢');
+                appendHorizontalDivider(output,
+                        tableFormat.getLeftEdgeBorderDivider(false),
+                        tableFormat.getHorizontalBorderFill(false, false),
+                        tableFormat.getCross(false, false),
+                        tableFormat.getRightEdgeBorderDivider(false));
 
             // Append the data for the current row.
             appendRow(output, data[row]);
         }
 
         // Horizontal divider at the bottom of the table.
-        appendHorizontalDivider(output, '╚', '═', '╧', '╝');
+        appendHorizontalDivider(output,
+                tableFormat.getBottomLeftCorner(),
+                tableFormat.getHorizontalBorderFill(true, false),
+                tableFormat.getBottomEdgeBorderDivider(),
+                tableFormat.getBottomRightCorner());
+
         return output.toString();
     }
 
@@ -151,7 +203,7 @@ public class ASCIITable {
             for (int column = 0; column < columnsCount; column++) {
 
                 // Either add the left or the middle borders, depending on the location of the column.
-                output.append(column == 0 ? '║' : '│');
+                output.append(tableFormat.getVerticalBorderFill(column == 0));
 
                 // Split the data on its newlines to determine the contents of each line in the column.
                 String[] cellLines = data[column].split("\\n");
@@ -164,7 +216,7 @@ public class ASCIITable {
             }
 
             // Add the right border.
-            output.append("║\n");
+            output.append(tableFormat.getVerticalBorderFill(true)).append('\n');
         }
     }
 
