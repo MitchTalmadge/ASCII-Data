@@ -19,6 +19,7 @@ public class ASCIITable {
     private final int[] columnWidths;
     private final int emptyWidth;
     private final String emptyMessage = "(empty)";
+    private String nullValue = "";
 
     /**
      * How the table will be displayed. Defines which characters to be used.
@@ -76,7 +77,7 @@ public class ASCIITable {
             // Iterate over each column in the row to get its width, and compare it to the maximum.
             for (int column = 0; column < columnsCount; column++) {
                 // Check the length of each line in the cell.
-                for (String rowDataLine : rowData[column].split("\\n"))
+                for (String rowDataLine : nullSafeData(rowData[column]).split("\\n"))
                     // Compare to the current max width.
                     columnWidths[column] = Math.max(columnWidths[column], rowDataLine.length());
             }
@@ -107,6 +108,17 @@ public class ASCIITable {
      */
     public ASCIITable withTableFormat(TableFormatAbstract tableFormat) {
         this.tableFormat = tableFormat;
+        return this;
+    }
+
+    /**
+     * Changes the value used for rendering <code>null</code> data.
+     *
+     * @param nullValue The nullValue to use. By default, the table will use an empty string (<code>""</code>).
+     * @return This ASCIITable instance.
+     */
+    public ASCIITable withNullValue(String nullValue) {
+        this.nullValue = nullValue;
         return this;
     }
 
@@ -190,7 +202,7 @@ public class ASCIITable {
         int rowHeight = 0;
         for (int column = 0; column < columnsCount; column++) {
             // The height of this cell.
-            int cellHeight = data[column].split("\\n").length;
+            int cellHeight = nullSafeData(data[column]).split("\\n").length;
             // Choose the greatest.
             rowHeight = Math.max(rowHeight, cellHeight);
         }
@@ -206,7 +218,7 @@ public class ASCIITable {
                 output.append(tableFormat.getVerticalBorderFill(column == 0));
 
                 // Split the data on its newlines to determine the contents of each line in the column.
-                String[] cellLines = data[column].split("\\n");
+                String[] cellLines = nullSafeData(data[column]).split("\\n");
 
                 // Decide what to put into this column. Use empty data if there is no specific data for this column.
                 String cellLine = line < cellLines.length ? cellLines[line] : "";
@@ -218,6 +230,10 @@ public class ASCIITable {
             // Add the right border.
             output.append(tableFormat.getVerticalBorderFill(true)).append('\n');
         }
+    }
+
+    private String nullSafeData(String data) {
+        return data == null ? nullValue : data;
     }
 
     /**

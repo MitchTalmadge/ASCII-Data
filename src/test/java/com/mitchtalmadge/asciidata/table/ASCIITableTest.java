@@ -154,4 +154,56 @@ public class ASCIITableTest {
 
     }
 
+
+    /**
+     * Tests a table with custom null data.
+     */
+    @Test
+    public void testNullDataTablesWithCustomNullValue() throws IOException {
+
+        String[] headers = new String[]{"ID", "Name", "Email"};
+        String[][] data = new String[][]{
+                {"123", "Alfred Alan", "aalan@gmail.com"},
+                {"223", null, "asmart@gmail.com"},
+                {"256", "Ben Bessel", "benb@outlook.com"},
+                {"374", "John Roberts", "johnrob@company.com"},
+        };
+
+        assertEquals(
+                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/utf8/nullDataTable.txt")),
+                TestUtils.commonizeLineEndings(ASCIITable.fromData(headers, data).toString())
+        );
+        // ASCII Table Format
+        assertEquals(
+                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/ascii/customNullDataTable.txt")),
+                TestUtils.commonizeLineEndings(ASCIITable.fromData(headers, data).withNullValue("n/a").withTableFormat(new ASCIITableFormat()).toString())
+        );
+
+    }
+
+    /**
+     * Tests a table with default null data.
+     */
+    @Test
+    public void testNullDataTablesWithDefaultNullValue() throws IOException {
+
+        String[] headers = new String[]{"ID", "Name", "Email"};
+        String[][] data = new String[][]{
+                {"123", "Alfred Alan", "aalan@gmail.com"},
+                {"223", null, "asmart@gmail.com"},
+                {"256", "Ben Bessel", "benb@outlook.com"},
+                {"374", "John Roberts", "johnrob@company.com"},
+        };
+
+        assertEquals(
+                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/utf8/nullDataTable.txt")),
+                TestUtils.commonizeLineEndings(ASCIITable.fromData(headers, data).toString())
+        );
+        // ASCII Table Format
+        assertEquals(
+                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/ascii/customNullDataTable.txt")),
+                TestUtils.commonizeLineEndings(ASCIITable.fromData(headers, data).withNullValue("n/a").withTableFormat(new ASCIITableFormat()).toString())
+        );
+
+    }
 }
