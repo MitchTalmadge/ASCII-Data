@@ -82,3 +82,8 @@ buildNumber.properties
 
 /.idea/
 *.iml
+
+# Eclipse
+/.project
+/.classpath
+/.settings
