@@ -17,6 +17,7 @@ public class ASCIITable {
     private final String[][] data;
     private final int columnsCount;
     private final int[] columnWidths;
+    private Align[] aligns;
     private final int emptyWidth;
     private final String emptyMessage = "(empty)";
     private String nullValue = "";
@@ -83,6 +84,11 @@ public class ASCIITable {
             }
         }
 
+        aligns = new Align[columnsCount];
+        for (int i = 0; i < columnsCount; i++) {
+            aligns[i] = Align.LEFT;
+        }
+
         // Determine the width of everything including borders.
         // This is to be used in case there is no data and we must write the empty message to the table.
 
@@ -122,6 +128,11 @@ public class ASCIITable {
         return this;
     }
 
+    public ASCIITable alignColumn(int column, Align align) {
+        this.aligns[column] = align;
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
@@ -134,7 +145,7 @@ public class ASCIITable {
                 tableFormat.getTopRightCorner());
 
         // Append the headers of the table.
-        appendRow(output, headers);
+        appendRow(output, headers, true);
 
         // Check if the data is empty, in which case, we will only write the empty message into the table contents.
         if (data.length == 0) {
@@ -146,7 +157,7 @@ public class ASCIITable {
 
             // Empty message row
             output.append(tableFormat.getVerticalBorderFill(true))
-                    .append(pad(emptyWidth, emptyMessage))
+                    .append(pad(emptyWidth, Align.LEFT, emptyMessage))
                     .append(tableFormat.getVerticalBorderFill(true))
                     .append('\n');
 
@@ -178,7 +189,7 @@ public class ASCIITable {
                         tableFormat.getRightEdgeBorderDivider(false));
 
             // Append the data for the current row.
-            appendRow(output, data[row]);
+            appendRow(output, data[row], false);
         }
 
         // Horizontal divider at the bottom of the table.
@@ -197,7 +208,7 @@ public class ASCIITable {
      * @param output The output to append to.
      * @param data   The data of the row to append. Each index corresponds to a column.
      */
-    private void appendRow(StringBuilder output, String[] data) {
+    private void appendRow(StringBuilder output, String[] data, boolean isHeader) {
         // Step 1: Determine the row height from the maximum number of lines out of each cell.
         int rowHeight = 0;
         for (int column = 0; column < columnsCount; column++) {
@@ -224,7 +235,11 @@ public class ASCIITable {
                 String cellLine = line < cellLines.length ? cellLines[line] : "";
 
                 // Pad and append the data.
-                output.append(pad(columnWidths[column], cellLine));
+                Align align = Align.LEFT;
+                if (!isHeader) {
+                    align = aligns[column];
+                }
+                output.append(pad(columnWidths[column], align, cellLine));
             }
 
             // Add the right border.
@@ -257,7 +272,7 @@ public class ASCIITable {
             output.append(column == 0 ? left : middle);
 
             // For the contents of the column, create a padding of the correct width and replace it with the fill border.
-            output.append(pad(columnWidths[column], "").replace(' ', fill));
+            output.append(pad(columnWidths[column], Align.LEFT, "").replace(' ', fill));
         }
 
         // Add the right border
@@ -271,8 +286,12 @@ public class ASCIITable {
      * @param data  The data to pad.
      * @return The data, padded with spaces to the given width.
      */
-    private static String pad(int width, String data) {
-        return String.format(" %1$-" + width + "s ", data);
+    private static String pad(int width, Align align, String data) {
+        if (align == null || align == Align.LEFT) {
+            return String.format(" %1$-" + width + "s ", data);
+        } else {
+            return String.format(" %1$" + width + "s ", data);
+        }
     }
 
 }

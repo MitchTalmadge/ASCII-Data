@@ -36,6 +36,31 @@ public class ASCIITableTest {
 
     }
 
+    /**
+     * Tests a simple table with example data and a right-aligned column.
+     */
+    @Test
+    public void testSimpleTableRightAlign() throws IOException {
+
+        String[] headers = new String[]{"ID", "Name", "Email"};
+        String[][] data = new String[][]{
+                {"123", "Alfred Alan", "aalan@gmail.com"},
+                {"223", "Alison Smart", "asmart@gmail.com"},
+                {"256", "Ben Bessel", "benb@outlook.com"},
+                {"374", "John Roberts", "johnrob@company.com"},
+        };
+
+        assertEquals(
+                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/utf8/simpleTableRight.txt")),
+                TestUtils.commonizeLineEndings(ASCIITable.fromData(headers, data).alignColumn(2, Align.RIGHT).toString())
+        );
+        // ASCII Table Format
+        assertEquals(
+                TestUtils.commonizeLineEndings(TestUtils.readFileToString("tables/ascii/simpleTableRight.txt")),
+                TestUtils.commonizeLineEndings(ASCIITable.fromData(headers, data).alignColumn(2, Align.RIGHT).withTableFormat(new ASCIITableFormat()).toString())
+        );
+
+    }
 
     /**
      * Tests tables with no data.
